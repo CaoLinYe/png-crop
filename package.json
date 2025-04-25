@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@types/node": "^22.15.2",
+    "@types/plist": "^3.0.5",
+    "plist": "^3.1.0",
+    "sharp": "^0.34.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
