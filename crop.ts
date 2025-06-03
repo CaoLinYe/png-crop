@@ -3,8 +3,8 @@ import * as fs from "fs";
 import * as path from "path";
 import * as plist from "plist";
 
-let in_dir = path.join(__dirname, "./in"); // 输入文件夹
-let out_dir = path.join(__dirname, "./out"); // 输出文件夹
+let in_dir = path.join(__dirname, "./crop/in"); // 输入文件夹
+let out_dir = path.join(__dirname, "./crop/out"); // 输出文件夹
 
 function sharpPngByPlist (png_file: string, data: any, save_dir: string) {
 	console.log(png_file, save_dir);
@@ -24,6 +24,7 @@ function sharpPngByPlist (png_file: string, data: any, save_dir: string) {
 				.extract({
 					width: Number(height), height: Number(width), left: Number(x), top: Number(y)
 				})
+				.rotate(-90)
 				.toFile(save_file);
 		}
 		else {
