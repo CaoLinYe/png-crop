@@ -12,12 +12,27 @@ function sharpPngByPlist (png_file: string, data: any, save_dir: string) {
 	Object.keys(data.frames).forEach((k) => {
 		let v = data.frames[k];
 		let rect = v.textureRect as string;
+		if (!rect) { rect = v.frame as string; }
 		let [x, y, width, height] = rect.replace(/[{}]/g, '').split(",");
-		sharp(png_file)
-			.extract({
-				width: Number(width), height: Number(height), left: Number(x), top: Number(y)
-			})
-			.toFile(`${save_dir}/${k}`);
+		let save_file = `${save_dir}/${k}`;
+		if (save_file.slice(-4) != ".png") {
+			save_file += ".png";
+		}
+		console.log(`保存图片${save_file}`);
+		if (v.rotated) {
+			sharp(png_file)
+				.extract({
+					width: Number(height), height: Number(width), left: Number(x), top: Number(y)
+				})
+				.toFile(save_file);
+		}
+		else {
+			sharp(png_file)
+				.extract({
+					width: Number(width), height: Number(height), left: Number(x), top: Number(y)
+				})
+				.toFile(save_file);
+		}
 	});
 }
 
@@ -30,7 +45,7 @@ fs.readdir(in_dir, (err, files: string[]) => {
 			if (item.slice(-4) == ".png") {
 				let png_file = `${in_dir}/${item}`;
 				let plist_file = png_file.slice(0, -4)+".plist";
-				console.log(png_file, plist_file);
+				// console.log(png_file, plist_file);
 				if (fs.existsSync(plist_file)) {
 					let content = fs.readFileSync(plist_file, "utf-8");
 					let data = plist.parse(content);
